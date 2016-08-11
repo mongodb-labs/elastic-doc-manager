@@ -7,7 +7,7 @@ except ImportError:
 import sys
 
 test_suite = "tests"
-tests_require = ["mongo-orchestration>= 0.2, < 0.4", "requests>=2.5.1"]
+tests_require = ["mongo-orchestration >= 0.2, < 0.4", "requests >= 2.5.1"]
 
 if sys.version_info[:2] == (2, 6):
     # Need unittest2 to run unittests in Python 2.6
@@ -31,6 +31,7 @@ setup(name='elastic-doc-manager',
       url='https://github.com/mongodb-labs/elastic-doc-manager',
       packages=["mongo_connector", "mongo_connector.doc_managers"],
       install_requires=['mongo-connector >= 2.3.0', 'elasticsearch >= 1.2, < 2.0.0'],
+	  extras_require={'aws': ['boto3 >= 1.4.0', 'requests-aws-sign >= 0.1.1']},
       license="Apache License, Version 2.0",
       classifiers=[
           "Development Status :: 4 - Beta",

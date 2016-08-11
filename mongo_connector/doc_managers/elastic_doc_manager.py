@@ -24,7 +24,7 @@ from threading import Timer
 
 import bson.json_util
 
-from elasticsearch import Elasticsearch, exceptions as es_exceptions
+from elasticsearch import Elasticsearch, exceptions as es_exceptions, connection as es_connection
 from elasticsearch.helpers import scan, streaming_bulk
 
 from mongo_connector import errors
@@ -34,6 +34,13 @@ from mongo_connector.constants import (DEFAULT_COMMIT_INTERVAL,
 from mongo_connector.util import exception_wrapper, retry_until_ok
 from mongo_connector.doc_managers.doc_manager_base import DocManagerBase
 from mongo_connector.doc_managers.formatters import DefaultDocumentFormatter
+
+_HAS_AWS = True
+try:
+    from requests_aws_sign import AWSV4Sign
+    from boto3 import session
+except ImportError:
+    _HAS_AWS = False
 
 wrap_exceptions = exception_wrapper({
     es_exceptions.ConnectionError: errors.ConnectionFailed,
@@ -55,8 +62,25 @@ class DocManager(DocManagerBase):
                  unique_key='_id', chunk_size=DEFAULT_MAX_BULK,
                  meta_index_name="mongodb_meta", meta_type="mongodb_meta",
                  attachment_field="content", **kwargs):
+        client_options = kwargs.get('clientOptions', {})
+        if 'aws' in kwargs:
+            if _HAS_AWS is False:
+                raise ConfigurationError('aws must be installed to sign elasticsearch requests')
+            aws = kwargs.get('aws', {'access_id': '', 'secret_key': '', 'region': 'us-east-1'})
+            aws_session = session.Session()
+            if 'access_id' in aws and 'secret_key' in aws:
+                aws_session = session.Session(
+                    aws_access_key_id = aws['access_id'],
+                    aws_secret_access_key = aws['secret_key'])
+            credentials = aws_session.get_credentials()
+            region = aws_session.region_name or aws['region']
+            aws_auth = AWSV4Sign(credentials, region, 'es')
+            client_options['http_auth'] = aws_auth
+            client_options['use_ssl'] = True
+            client_options['verify_certs'] = True
+            client_options['connection_class'] = es_connection.RequestsHttpConnection
         self.elastic = Elasticsearch(
-            hosts=[url], **kwargs.get('clientOptions', {}))
+            hosts=[url], **client_options)
         self.auto_commit_interval = auto_commit_interval
         self.meta_index_name = meta_index_name
         self.meta_type = meta_type
