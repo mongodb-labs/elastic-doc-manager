@@ -25,7 +25,7 @@ from threading import Timer
 import bson.json_util
 
 from elasticsearch import Elasticsearch, exceptions as es_exceptions, connection as es_connection
-from elasticsearch.helpers import scan, streaming_bulk
+from elasticsearch.helpers import scan, streaming_bulk, BulkIndexError
 
 from mongo_connector import errors
 from mongo_connector.compat import u
@@ -43,6 +43,7 @@ except ImportError:
     _HAS_AWS = False
 
 wrap_exceptions = exception_wrapper({
+    BulkIndexError: errors.OperationFailed,
     es_exceptions.ConnectionError: errors.ConnectionFailed,
     es_exceptions.TransportError: errors.OperationFailed,
     es_exceptions.NotFoundError: errors.OperationFailed,
