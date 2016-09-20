@@ -94,6 +94,9 @@ class DocManager(DocManagerBase):
                  meta_index_name="mongodb_meta", meta_type="mongodb_meta",
                  attachment_field="content", **kwargs):
         client_options = kwargs.get('clientOptions', {})
+        client_options.setdefault('sniff_on_start', True)
+        client_options.setdefault('sniff_on_connection_fail', True)
+        client_options.setdefault('sniffer_timeout', 60)
         if 'aws' in kwargs:
             if not _HAS_AWS:
                 raise errors.InvalidConfiguration(
@@ -105,7 +108,9 @@ class DocManager(DocManagerBase):
             client_options['verify_certs'] = True
             client_options['connection_class'] = \
                 es_connection.RequestsHttpConnection
-        self.elastic = Elasticsearch(hosts=[url], **client_options)
+        if type(url) is not list:
+            url = [url]
+        self.elastic = Elasticsearch(hosts=url, **client_options)
         self.auto_commit_interval = auto_commit_interval
         self.meta_index_name = meta_index_name
         self.meta_type = meta_type
