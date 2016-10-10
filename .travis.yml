@@ -10,6 +10,7 @@ services:
   - elasticsearch
 
 install:
+  - pip install --upgrade setuptools
   - pip install mongo-orchestration
   - sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-mapper-attachments/2.4.3
 
