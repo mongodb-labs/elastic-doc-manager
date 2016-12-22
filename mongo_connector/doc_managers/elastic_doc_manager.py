@@ -53,6 +53,9 @@ LOG = logging.getLogger(__name__)
 
 DEFAULT_AWS_REGION = 'us-east-1'
 
+__version__ = '0.2.1.dev0'
+"""Elasticsearch 1.X DocManager version."""
+
 
 def convert_aws_args(aws_args):
     """Convert old style options into arguments to boto3.session.Session."""
