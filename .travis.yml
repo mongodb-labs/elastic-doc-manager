@@ -1,29 +1,48 @@
+sudo: false
 language: python
-python:
-  - 2.6
-  - 2.7
-  - 3.3
-  - 3.4
-  - 3.5
 
-services:
-  - elasticsearch
+env:
+  global:
+    - MO_ADDRESS=127.0.0.1:20000
+    - ELASTIC=1.7.3
+    - ELASTIC_MAPPER_ATTACHMENTS=2.7.1
+
+matrix:
+  fast_finish: true
+  include:
+    - python: 2.6
+      env: MONGODB=3.4.1
+    - python: 2.7
+      env: MONGODB=3.2.11
+    - python: 3.3
+      env: MONGODB=3.0.14
+    - python: 3.4
+      env: MONGODB=2.6.12
+    - python: 3.5
+      env: MONGODB=2.4.14
 
 install:
-  - pip install --upgrade setuptools
-  - pip install mongo-orchestration
-  - sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-mapper-attachments/2.4.3
+  - # Install Elasticsearch with mapper-attachments
+  - wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ELASTIC}.tar.gz
+  - tar -xvf elasticsearch-${ELASTIC}.tar.gz
+  - echo 'y' |  elasticsearch-${ELASTIC}/bin/plugin install elasticsearch/elasticsearch-mapper-attachments/${ELASTIC_MAPPER_ATTACHMENTS}
+  - export PATH=${PWD}/elasticsearch-${ELASTIC}/bin/:${PATH}
+  - elasticsearch -v
+  - # Install MongoDB
+  - wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${MONGODB}.tgz
+  - tar -zxf mongodb-linux-x86_64-${MONGODB}.tgz
+  - export PATH=${PWD}/mongodb-linux-x86_64-${MONGODB}/bin/:${PATH}
+  - mongod --version
+  - # Install MongoOrchestration
+  - pip install "mongo-orchestration>=0.6.7,<1.0"
 
 before_script:
-  - sudo service elasticsearch restart
-  - mongo-orchestration start
+  - elasticsearch > temp.txt &
   - sleep 10
-  - sudo lsof -n -iTCP:9200
-  - sudo lsof -n -iTCP:8889
+  - mongo-orchestration start -p 20000 -b 127.0.0.1
 
 script:
   - python setup.py test
 
 after_script:
   - mongo-orchestration stop
-  - sudo service elasticsearch stop
