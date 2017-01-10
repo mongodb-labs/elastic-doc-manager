@@ -20,12 +20,13 @@ import time
 
 from bson import SON
 from elasticsearch import Elasticsearch
+from elasticsearch.helpers import bulk, scan
 from gridfs import GridFS
 
 sys.path[0:0] = [""]
 
-from mongo_connector.doc_managers.elastic_doc_manager import DocManager
 from mongo_connector.connector import Connector
+from mongo_connector.doc_managers.elastic_doc_manager import DocManager
 from mongo_connector.test_utils import (ReplicaSet,
                                         assert_soon,
                                         close_client)
@@ -106,7 +107,8 @@ class TestElastic(ElasticsearchTestCase):
             os.unlink("oplog.timestamp")
         except OSError:
             pass
-        docman = DocManager(elastic_pair)
+        docman = DocManager(elastic_pair,
+                            auto_commit_interval=0)
         self.connector = Connector(
             mongo_address=self.repl_set.uri,
             ns_set=['test.test'],
