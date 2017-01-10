@@ -54,7 +54,7 @@ LOG = logging.getLogger(__name__)
 
 DEFAULT_AWS_REGION = 'us-east-1'
 
-__version__ = '0.2.1.dev0'
+__version__ = '0.3.0'
 """Elasticsearch 1.X DocManager version."""
 
 
