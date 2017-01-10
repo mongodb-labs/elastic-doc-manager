@@ -12,6 +12,10 @@ The easiest way to install elastic-doc-manager is with
 `pip <https://pypi.python.org/pypi/pip>`__::
 
   pip install elastic-doc-manager
+  
+Or install the necessary extras for `signing requests to AWS Elasticsearch Service <https://github.com/mongodb-labs/mongo-connector/wiki/Usage-with-ElasticSearch>`__ along with elastic-doc-manager if your use case necessitates it::
+
+  pip install elastic-doc-manager[aws]
 
 You can also install the development version of elastic-doc-manager
 manually::
