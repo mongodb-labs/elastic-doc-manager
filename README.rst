@@ -1,31 +1,68 @@
-.. note:: This is the document manager for Elastic 1.x. If you want to use Elastic >= 2.0, please install elastic2-doc-manager.
+===================
+elastic-doc-manager
+===================
+
+.. image:: https://travis-ci.org/mongodb-labs/elastic-doc-manager.svg?branch=master
+   :alt: View build status
+   :target: https://travis-ci.org/mongodb-labs/elastic-doc-manager
+
+**Note: This is the document manager for Elasticsearch 1.x. If you want to use
+Elasticsearch >= 2.0, please install elastic2-doc-manager.**
 
 Getting Started
----------------
+===============
+
+This package is a document manager for
+`mongo-connector <https://github.com/mongodb-labs/mongo-connector>`_. that
+targets Elasticsearch version 1.x.
+For information on running mongo-connector with Elasticsearch, please see the
+`MongoConnector Usage with Elasticsearch
+<https://github.com/mongodb-labs/mongo-connector/wiki/Usage%20with%20ElasticSearch>`_
+wiki page.
 
 Installation
-~~~~~~~~~~~~
+============
 
-This package is a document manager for mongo-connector.
+The installation of the elastic-doc-manager depends on which version of
+Elasticsearch you are targeting.
 
-The easiest way to install elastic-doc-manager is with
+Elasticsearch 1.x
+-----------------
+
+For use with an Elasticsearch 1.x server, install with
 `pip <https://pypi.python.org/pypi/pip>`__::
 
-  pip install elastic-doc-manager
+  pip install 'elastic-doc-manager'
+
+Amazon Elasticsearch 1.x Service
+--------------------------------
+
+To use with Amazon Elasticsearch Service, you must install the required AWS
+dependencies along with the version of Elasticsearch::
+
+  pip install 'elastic-doc-manager[aws]'
+
+Elasticsearch >= 2.0
+--------------------
+
+This is the document manager for Elasticsearch 1.x only. If you
+want to target 2.0 or greater, please install the
+`elastic2-doc-manager <https://github.com/mongodb-labs/elastic2-doc-manager>`_.
+
+Development
+-----------
 
 You can also install the development version of elastic-doc-manager
 manually::
 
-  git clone https://github.com/mongodb-labs/elastic-doc-manager
-  cd elastic-doc-manager
-  python setup.py install
+  git clone https://github.com/mongodb-labs/elastic-doc-manager.git
+  pip install -e './elastic-doc-manager'
 
-You may have to run ``python setup.py install`` with ``sudo``, depending
-on where you're installing mongo-connector and what privileges you have.
+You may have to run ``pip`` with ``sudo``, depending on where you're
+installing and what privileges you have.
 
-For information on running mongo-connector with elastic, please see https://github.com/mongodb-labs/mongo-connector/wiki/Usage%20with%20ElasticSearch
-
-.. note:: Please note that before mongo-connector version 2.2.2, this elastic doc manager was packaged with mongo-connector and only supports Elastic 1.x.
+**Note: Before mongo-connector version 2.2.2, the elastic doc manager was packaged with mongo-connector
+and only supported Elasticsearch 1.x.**
 
 Running the tests
 -----------------
