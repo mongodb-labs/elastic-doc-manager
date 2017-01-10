@@ -31,7 +31,7 @@ setup(name='elastic-doc-manager',
       author_email='mongodb-user@googlegroups.com',
       url='https://github.com/mongodb-labs/elastic-doc-manager',
       packages=["mongo_connector", "mongo_connector.doc_managers"],
-      install_requires=['mongo-connector >= 2.3.0', 'elasticsearch >= 1.2, < 2.0.0'],
+      install_requires=['mongo-connector >= 2.5.0', 'elasticsearch >= 1.2, < 2.0.0'],
       extras_require={'aws': ['boto3 >= 1.4.0', 'requests-aws-sign >= 0.1.2']},
       license="Apache License, Version 2.0",
       classifiers=[
