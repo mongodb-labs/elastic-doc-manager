@@ -13,7 +13,7 @@ Getting Started
 ===============
 
 This package is a document manager for
-`mongo-connector <https://github.com/mongodb-labs/mongo-connector>`_. that
+`mongo-connector <https://github.com/mongodb-labs/mongo-connector>`_ that
 targets Elasticsearch version 1.x.
 For information on running mongo-connector with Elasticsearch, please see the
 `MongoConnector Usage with Elasticsearch
