@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 0.3.0
+-------------
+
+- Significant performance improvements because operations are buffered.
+- BulkIndexErrors are now caught and reraised as OperationFailed.
+- Support for connecting to multiple Elasticsearch hosts. See
+  https://github.com/mongodb-labs/mongo-connector/wiki/Usage-with-Elasticsearch#connecting-to-multiple-elasticsearch-hosts.
+
 Version 0.2.0
 -------------
 

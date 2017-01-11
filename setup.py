@@ -22,7 +22,7 @@ except IOError:
     long_description = None  # Install without README.rst
 
 setup(name='elastic-doc-manager',
-      version='0.2.1.dev0',
+      version='0.3.0',
       maintainer='mongodb',
       description='Elastic 1.x plugin for mongo-connector',
       long_description=long_description,
