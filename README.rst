@@ -2,6 +2,8 @@
 elastic-doc-manager
 ===================
 
+Ownership of the elastic-doc-manager repo has been transferred to YouGov.  MongoDB would like to thank Jason Coombs, Executive Technical Director at YouGov, for agreeing to maintain this project.
+
 .. image:: https://travis-ci.org/mongodb-labs/elastic-doc-manager.svg?branch=master
    :alt: View build status
    :target: https://travis-ci.org/mongodb-labs/elastic-doc-manager
